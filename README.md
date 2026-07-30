@@ -22,10 +22,7 @@ To access **Power BI**, just download a copy of the `GestaoLog.pbix` file.
 
 <div align="left">
     <img src="/images/Dashboard1.png" height="300" alt="Dashboard" />
-    </br>
     <img src="/images/Dashboard2.png" height="300" alt="Dashboard" />
-    </br>
     <img src="/images/Dashboard3.png" height="300" alt="Dashboard" />
-    </br>
     <img src="/images/Dashboard4.png" height="300" alt="Dashboard" />
 </div>
