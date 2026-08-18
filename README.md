@@ -17,12 +17,3 @@ To access **Power BI**, just download a copy of the `GestaoLog.pbix` file.
     <img width="10" />
     <img src="/images/Logo-Excel.svg" height="45" alt="SQL Server Logo" title="Excel" />
 </div>
-
-### Dashboards 
-
-<div align="left">
-    <img src="/images/Dashboard1.png" height="300" alt="Dashboard" />
-    <img src="/images/Dashboard2.png" height="300" alt="Dashboard" />
-    <img src="/images/Dashboard3.png" height="300" alt="Dashboard" />
-    <img src="/images/Dashboard4.png" height="300" alt="Dashboard" />
-</div>
