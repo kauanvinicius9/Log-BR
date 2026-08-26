@@ -24,175 +24,189 @@ IF OBJECT_ID('dbo.Clientes', 'U') IS NOT NULL DROP TABLE dbo.Clientes;
 GO
 
 CREATE TABLE dbo.Clientes (
-ClienteID INT IDENTITY(1,1) PRIMARY KEY,
-Nome NVARCHAR(150) NOT NULL,
-CPF VARCHAR(20) NOT NULL UNIQUE,
-Email VARCHAR(150) NULL,
-Telefone VARCHAR(20) NULL,
-Endereco NVARCHAR(200) NULL,
-Cidade NVARCHAR(100) NULL,
-Estado CHAR(2) NULL,
-CEP VARCHAR(10) NULL,
-DataCadastro DATETIME NOT NULL DEFAULT GETDATE(),
-Ativo BIT NOT NULL DEFAULT 1
+  ClienteID INT IDENTITY(1,1) PRIMARY KEY,
+  Nome NVARCHAR(150) NOT NULL,
+  CPF VARCHAR(20) NOT NULL UNIQUE,
+  Email VARCHAR(150) NULL,
+  Telefone VARCHAR(20) NULL,
+  Endereco NVARCHAR(200) NULL,
+  Cidade NVARCHAR(100) NULL,
+  Estado CHAR(2) NULL,
+  CEP VARCHAR(10) NULL,
+  DataCadastro DATETIME NOT NULL DEFAULT GETDATE(),
+  Ativo BIT NOT NULL DEFAULT 1
 );
 GO
 
 CREATE TABLE dbo.Fornecedores (
-FornecedorID INT IDENTITY(1,1) PRIMARY KEY,
-Nome NVARCHAR(150) NOT NULL,
-CNPJ VARCHAR(20) NOT NULL UNIQUE,
-Email VARCHAR(150) NULL,
-Telefone VARCHAR(20) NULL,
-Cidade NVARCHAR(100) NULL,
-Estado CHAR(2) NULL,
-DataCadastro DATETIME NOT NULL DEFAULT GETDATE()
+  FornecedorID INT IDENTITY(1,1) PRIMARY KEY,
+  Nome NVARCHAR(150) NOT NULL,
+  CNPJ VARCHAR(20) NOT NULL UNIQUE,
+  Email VARCHAR(150) NULL,
+  Telefone VARCHAR(20) NULL,
+  Cidade NVARCHAR(100) NULL,
+  Estado CHAR(2) NULL,
+  DataCadastro DATETIME NOT NULL DEFAULT GETDATE()
 );
 GO
 
 CREATE TABLE dbo.Armazens (
-ArmazemID INT IDENTITY(1,1) PRIMARY KEY,
-Nome NVARCHAR(150) NOT NULL,
-Endereco NVARCHAR(200) NULL,
-Cidade NVARCHAR(100) NULL,
-Estado CHAR(2) NULL,
-CapacidadeM3 DECIMAL(10,2) NOT NULL DEFAULT 0,
-Ativo BIT NOT NULL DEFAULT 1
+  ArmazemID INT IDENTITY(1,1) PRIMARY KEY,
+  Nome NVARCHAR(150) NOT NULL,
+  Endereco NVARCHAR(200) NULL,
+  Cidade NVARCHAR(100) NULL,
+  Estado CHAR(2) NULL,
+  CapacidadeM3 DECIMAL(10,2) NOT NULL DEFAULT 0,
+  Ativo BIT NOT NULL DEFAULT 1
 );
 GO
 
 CREATE TABLE dbo.Produtos (
-ProdutoID INT IDENTITY(1,1) PRIMARY KEY,
-Nome NVARCHAR(150) NOT NULL,
-Categoria NVARCHAR(80) NULL,
-FornecedorID INT NULL,
-PesoKG DECIMAL(10,3) NOT NULL DEFAULT 0,
-VolumeM3 DECIMAL(10,3) NOT NULL DEFAULT 0,
-PrecoUnitario DECIMAL(12,2) NOT NULL DEFAULT 0,
-CONSTRAINT FK_Produtos_Fornecedores FOREIGN KEY (FornecedorID) REFERENCES dbo.Fornecedores(FornecedorID)
+  ProdutoID INT IDENTITY(1,1) PRIMARY KEY,
+  Nome NVARCHAR(150) NOT NULL,
+  Categoria NVARCHAR(80) NULL,
+  FornecedorID INT NULL,
+  PesoKG DECIMAL(10,3) NOT NULL DEFAULT 0,
+  VolumeM3 DECIMAL(10,3) NOT NULL DEFAULT 0,
+  PrecoUnitario DECIMAL(12,2) NOT NULL DEFAULT 0,
+  CONSTRAINT FK_Produtos_Fornecedores 
+    FOREIGN KEY (FornecedorID)  
+    REFERENCES dbo.Fornecedores(FornecedorID)
 );
 GO
 
 CREATE TABLE dbo.Transportadoras (
-TransportadoraID INT IDENTITY(1,1) PRIMARY KEY,
-Nome NVARCHAR(150) NOT NULL,
-CNPJ VARCHAR(20) NOT NULL UNIQUE,
-Email VARCHAR(150) NULL,
-Telefone VARCHAR(20) NULL
+  TransportadoraID INT IDENTITY(1,1) PRIMARY KEY,
+  Nome NVARCHAR(150) NOT NULL,
+  CNPJ VARCHAR(20) NOT NULL UNIQUE,
+  Email VARCHAR(150) NULL,
+  Telefone VARCHAR(20) NULL
 );
 GO
 
 CREATE TABLE dbo.Veiculos (
-VeiculoID INT IDENTITY(1,1) PRIMARY KEY,
-Placa VARCHAR(10) NOT NULL UNIQUE,
-Tipo NVARCHAR(50) NOT NULL,
-CapacidadeKG DECIMAL(10,2) NOT NULL DEFAULT 0,
-CapacidadeM3 DECIMAL(10,2) NOT NULL DEFAULT 0,
-TransportadoraID INT NOT NULL,
-Status NVARCHAR(30) NOT NULL CONSTRAINT DF_Status DEFAULT 'Disponível',
-CONSTRAINT FK_Veiculos_Transportadoras FOREIGN KEY (TransportadoraID) REFERENCES dbo.Transportadoras(TransportadoraID)
+  VeiculoID INT IDENTITY(1,1) PRIMARY KEY,
+  Placa VARCHAR(10) NOT NULL UNIQUE,
+  Tipo NVARCHAR(50) NOT NULL,
+  CapacidadeKG DECIMAL(10,2) NOT NULL DEFAULT 0,
+  CapacidadeM3 DECIMAL(10,2) NOT NULL DEFAULT 0,
+  TransportadoraID INT NOT NULL,
+  Status NVARCHAR(30) NOT NULL CONSTRAINT DF_Status DEFAULT 'Disponível',
+  CONSTRAINT FK_Veiculos_Transportadoras 
+    FOREIGN KEY (TransportadoraID) 
+    REFERENCES dbo.Transportadoras(TransportadoraID)
 );
 GO
 
 CREATE TABLE dbo.Motoristas (
-MotoristaID INT IDENTITY(1,1) PRIMARY KEY,
-Nome NVARCHAR(150) NOT NULL,
-CPF VARCHAR(20) NOT NULL UNIQUE,
-CNH VARCHAR(20) NOT NULL UNIQUE,
-CategoriaCNH VARCHAR(5) NOT NULL,
-Email VARCHAR(150) NULL,
-Telefone VARCHAR(20) NULL,
-TransportadoraID INT NOT NULL,
-CONSTRAINT FK_Motoristas_Transportadoras FOREIGN KEY (TransportadoraID) REFERENCES dbo.Transportadoras(TransportadoraID)
+  MotoristaID INT IDENTITY(1,1) PRIMARY KEY,
+  Nome NVARCHAR(150) NOT NULL,
+  CPF VARCHAR(20) NOT NULL UNIQUE,
+  CNH VARCHAR(20) NOT NULL UNIQUE,
+  CategoriaCNH VARCHAR(5) NOT NULL,
+  Email VARCHAR(150) NULL,
+  Telefone VARCHAR(20) NULL,
+  TransportadoraID INT NOT NULL,
+  CONSTRAINT FK_Motoristas_Transportadoras 
+    FOREIGN KEY (TransportadoraID) 
+    REFERENCES dbo.Transportadoras(TransportadoraID)
 );
 GO
 
 CREATE TABLE dbo.Estoque (
-EstoqueID INT IDENTITY(1,1) PRIMARY KEY,
-ArmazemID INT NOT NULL,
-ProdutoID INT NOT NULL,
-Quantidade INT NOT NULL DEFAULT 0,
-QuantidadeMin INT NOT NULL DEFAULT 0,
-DataAtualizacao DATETIME NOT NULL DEFAULT GETDATE(),
-CONSTRAINT FK_Estoque_Armazens FOREIGN KEY (ArmazemID) REFERENCES dbo.Armazens(ArmazemID),
-CONSTRAINT FK_Estoque_Produtos FOREIGN KEY (ProdutoID) REFERENCES dbo.Produtos(ProdutoID),
-CONSTRAINT UQ_Estoque_Armazem_Produto UNIQUE (ArmazemID, ProdutoID),
-CONSTRAINT CK_Estoque_Quantidade CHECK (Quantidade >= 0)
+  EstoqueID INT IDENTITY(1,1) PRIMARY KEY,
+  ArmazemID INT NOT NULL,
+  ProdutoID INT NOT NULL,
+  Quantidade INT NOT NULL DEFAULT 0,
+  QuantidadeMin INT NOT NULL DEFAULT 0,
+  DataAtualizacao DATETIME NOT NULL DEFAULT GETDATE(),
+  CONSTRAINT FK_Estoque_Armazens FOREIGN KEY (ArmazemID) REFERENCES dbo.Armazens(ArmazemID),
+  CONSTRAINT FK_Estoque_Produtos FOREIGN KEY (ProdutoID) REFERENCES dbo.Produtos(ProdutoID),
+  CONSTRAINT UQ_Estoque_Armazem_Produto UNIQUE (ArmazemID, ProdutoID),
+  CONSTRAINT CK_Estoque_Quantidade CHECK (Quantidade >= 0)
 );
 GO
 
 CREATE TABLE dbo.Pedidos (
-PedidoID INT IDENTITY(1,1) PRIMARY KEY,
-ClienteID INT NOT NULL,
-ArmazemOrigemID INT NOT NULL,
-DataPedido DATETIME NOT NULL DEFAULT GETDATE(),
-StatusPedido NVARCHAR(30) NOT NULL DEFAULT 'Enviado',
-ValorTotal DECIMAL(14,2) NOT NULL DEFAULT 0,
-CONSTRAINT FK_Pedidos_Clientes FOREIGN KEY (ClienteID) REFERENCES dbo.Clientes(ClienteID),
-CONSTRAINT FK_Pedidos_Armazens FOREIGN KEY (ArmazemOrigemID) REFERENCES dbo.Armazens(ArmazemID),
-CONSTRAINT CK_Pedidos_Status CHECK (StatusPedido IN ('Enviado','Entregue','Cancelado', 'Atrasado'))
+  PedidoID INT IDENTITY(1,1) PRIMARY KEY,
+  ClienteID INT NOT NULL,
+  ArmazemOrigemID INT NOT NULL,
+  DataPedido DATETIME NOT NULL DEFAULT GETDATE(),
+  StatusPedido NVARCHAR(30) NOT NULL DEFAULT 'Enviado',
+  ValorTotal DECIMAL(14,2) NOT NULL DEFAULT 0,
+  CONSTRAINT FK_Pedidos_Clientes FOREIGN KEY (ClienteID) REFERENCES dbo.Clientes(ClienteID),
+  CONSTRAINT FK_Pedidos_Armazens FOREIGN KEY (ArmazemOrigemID) REFERENCES dbo.Armazens(ArmazemID),
+  CONSTRAINT CK_Pedidos_Status CHECK (StatusPedido IN ('Enviado','Entregue','Cancelado', 'Atrasado'))
 );
 GO
 
 CREATE TABLE dbo.ItensPedido (
-ItemID INT IDENTITY(1,1) PRIMARY KEY,
-PedidoID INT NOT NULL,
-ProdutoID INT NOT NULL,
-Quantidade INT NOT NULL,
-PrecoUnitario DECIMAL(12,2) NOT NULL,
-CONSTRAINT FK_ItensPedido_Pedidos FOREIGN KEY (PedidoID) REFERENCES dbo.Pedidos(PedidoID) ON DELETE CASCADE,
-CONSTRAINT FK_ItensPedido_Produtos FOREIGN KEY (ProdutoID) REFERENCES dbo.Produtos(ProdutoID),
-CONSTRAINT CK_ItensPedido_Quantidade CHECK (Quantidade > 0)
+  ItemID INT IDENTITY(1,1) PRIMARY KEY,
+  PedidoID INT NOT NULL,
+  ProdutoID INT NOT NULL,
+  Quantidade INT NOT NULL,
+  PrecoUnitario DECIMAL(12,2) NOT NULL,
+  CONSTRAINT FK_ItensPedido_Pedidos FOREIGN KEY (PedidoID) REFERENCES dbo.Pedidos(PedidoID) ON DELETE CASCADE,
+  CONSTRAINT FK_ItensPedido_Produtos FOREIGN KEY (ProdutoID) REFERENCES dbo.Produtos(ProdutoID),
+  CONSTRAINT CK_ItensPedido_Quantidade CHECK (Quantidade > 0)
 );
 GO
 
 CREATE TABLE dbo.Rotas (
-RotaID INT IDENTITY(1,1) PRIMARY KEY,
-ArmazemOrigemID INT NOT NULL,
-CidadeDestino NVARCHAR(100) NOT NULL,
-EstadoDestino CHAR(2) NOT NULL,
-DistanciaKM DECIMAL(10,2) NOT NULL,
-TempoEstimadoHoras DECIMAL(6,2) NOT NULL,
-CONSTRAINT FK_Rotas_Armazens FOREIGN KEY (ArmazemOrigemID) REFERENCES dbo.Armazens(ArmazemID)
+  RotaID INT IDENTITY(1,1) PRIMARY KEY,
+  ArmazemOrigemID INT NOT NULL,
+  CidadeDestino NVARCHAR(100) NOT NULL,
+  EstadoDestino CHAR(2) NOT NULL,
+  DistanciaKM DECIMAL(10,2) NOT NULL,
+  TempoEstimadoHoras DECIMAL(6,2) NOT NULL,
+  CONSTRAINT FK_Rotas_Armazens 
+    FOREIGN KEY (ArmazemOrigemID)  
+    REFERENCES dbo.Armazens(ArmazemID)
 );
 GO
 
 CREATE TABLE dbo.Entregas (
-EntregaID INT IDENTITY(1,1) PRIMARY KEY,
-PedidoID INT NOT NULL,
-VeiculoID INT NOT NULL,
-MotoristaID INT NOT NULL,
-RotaID INT NOT NULL,
-DataSaida DATETIME NULL,
-DataEntregaPrevista DATETIME NULL,
-DataEntregaReal DATETIME NULL,
-StatusEntrega NVARCHAR(30) NOT NULL DEFAULT 'Entregue',
-CONSTRAINT FK_Entregas_Pedidos FOREIGN KEY (PedidoID) REFERENCES dbo.Pedidos(PedidoID),
-CONSTRAINT FK_Entregas_Veiculos FOREIGN KEY (VeiculoID) REFERENCES dbo.Veiculos(VeiculoID),
-CONSTRAINT FK_Entregas_Motoristas FOREIGN KEY (MotoristaID) REFERENCES dbo.Motoristas(MotoristaID),
-CONSTRAINT FK_Entregas_Rotas FOREIGN KEY (RotaID) REFERENCES dbo.Rotas(RotaID),
-CONSTRAINT CK_Entregas_Status CHECK (StatusEntrega IN ('Entregue','Atrasado','Cancelado'))
+  EntregaID INT IDENTITY(1,1) PRIMARY KEY,
+  PedidoID INT NOT NULL,
+  VeiculoID INT NOT NULL,
+  MotoristaID INT NOT NULL,
+  RotaID INT NOT NULL,
+  DataSaida DATETIME NULL,
+  DataEntregaPrevista DATETIME NULL,
+  DataEntregaReal DATETIME NULL,
+  StatusEntrega NVARCHAR(30) NOT NULL DEFAULT 'Entregue',
+  CONSTRAINT FK_Entregas_Pedidos FOREIGN KEY (PedidoID) REFERENCES dbo.Pedidos(PedidoID),
+  CONSTRAINT FK_Entregas_Veiculos FOREIGN KEY (VeiculoID) REFERENCES dbo.Veiculos(VeiculoID),
+  CONSTRAINT FK_Entregas_Motoristas FOREIGN KEY (MotoristaID) REFERENCES dbo.Motoristas(MotoristaID),
+  CONSTRAINT FK_Entregas_Rotas FOREIGN KEY (RotaID) REFERENCES dbo.Rotas(RotaID),
+  CONSTRAINT CK_Entregas_Status CHECK (StatusEntrega IN ('Entregue','Atrasado','Cancelado'))
 );
 GO
 
 CREATE TABLE dbo.Rastreamento (
-RastreamentoID INT IDENTITY(1,1) PRIMARY KEY,
-EntregaID INT NOT NULL,
-DataHora DATETIME NOT NULL DEFAULT GETDATE(),
-Latitude DECIMAL(9,6) NOT NULL,
-Longitude DECIMAL(9,6) NOT NULL,
-StatusAtual NVARCHAR(50) NULL,
-CONSTRAINT FK_Rastreamento_Entregas FOREIGN KEY (EntregaID) REFERENCES dbo.Entregas(EntregaID) ON DELETE CASCADE
+  RastreamentoID INT IDENTITY(1,1) PRIMARY KEY,
+  EntregaID INT NOT NULL,
+  DataHora DATETIME NOT NULL DEFAULT GETDATE(),
+  Latitude DECIMAL(9,6) NOT NULL,
+  Longitude DECIMAL(9,6) NOT NULL,
+  StatusAtual NVARCHAR(50) NULL,
+  CONSTRAINT FK_Rastreamento_Entregas 
+    FOREIGN KEY (EntregaID) 
+    REFERENCES dbo.Entregas(EntregaID) 
+    ON DELETE CASCADE
 );
 GO
 
 CREATE TABLE dbo.Ocorrencias (
-OcorrenciaID INT IDENTITY(1,1) PRIMARY KEY,
-EntregaID INT NOT NULL,
-TipoOcorrencia NVARCHAR(60) NOT NULL,
-Descricao NVARCHAR(400) NULL,
-DataHora DATETIME NOT NULL DEFAULT GETDATE(),
-CONSTRAINT FK_Ocorrencias_Entregas FOREIGN KEY (EntregaID) REFERENCES dbo.Entregas(EntregaID) ON DELETE CASCADE
+  OcorrenciaID INT IDENTITY(1,1) PRIMARY KEY,
+  EntregaID INT NOT NULL,
+  TipoOcorrencia NVARCHAR(60) NOT NULL,
+  Descricao NVARCHAR(400) NULL,
+  DataHora DATETIME NOT NULL DEFAULT GETDATE(),
+  CONSTRAINT FK_Ocorrencias_Entregas 
+    FOREIGN KEY (EntregaID) 
+    REFERENCES dbo.Entregas(EntregaID) 
+    ON DELETE CASCADE
 );
 GO
 
@@ -203,9 +217,7 @@ CREATE INDEX IX_Estoque_Produto ON dbo.Estoque(ProdutoID);
 CREATE INDEX IX_Rastreamento_Entrega_Data ON dbo.Rastreamento(EntregaID, DataHora);
 GO
 
-INSERT INTO dbo.Clientes
-(Nome, CPF, Email, Telefone, Cidade, Estado, CEP)
-VALUES
+INSERT INTO dbo.Clientes(Nome, CPF, Email, Telefone, Cidade, Estado, CEP) VALUES
 ('Comércio Silva Ltda', '00.000.000-00', 'contato@silva.com', '(19) 3000-1000', 'Campinas', 'SP', '13010-000'),
 ('Distribuidora Norte', '11.111.111-00', 'contato@norte.com', '(11) 4000-2000', 'São Paulo', 'SP', '01000-000'),
 ('Mercantil Oliveira', '55.555.555-55', 'vendas@oliveira.com', '(31) 3100-5000', 'Belo Horizonte', 'MG', '30100-000'),
@@ -218,9 +230,7 @@ VALUES
 ('Grupo Alpha', '30.333.444-55', 'logistica@alpha.com', '(21) 3777-3000', 'Rio de Janeiro', 'RJ', '20000-000');
 GO
 
-INSERT INTO dbo.Fornecedores
-(Nome, CNPJ, Email, Cidade, Estado)
-VALUES
+INSERT INTO dbo.Fornecedores(Nome, CNPJ, Email, Cidade, Estado) VALUES
 ('Indústria ABC', '12.345.678/0001-95', 'vendas@abc.com', 'Jundiaí', 'SP'),
 ('Metalúrgica Delta', '12.222.019/0001-90', 'contato@delta.com', 'Sorocaba', 'SP'),
 ('Cabos Premium', '12.999.111/0001-89', 'vendas@cabospremium.com', 'Curitiba', 'PR'),
@@ -230,9 +240,7 @@ VALUES
 ('Espaço Digital', '08.999.888/0001-07', 'dig@espaco.com', 'Rio de Janeiro', 'RJ');
 GO
 
-INSERT INTO dbo.Armazens
-(Nome, Endereco, Cidade, Estado, CapacidadeM3)
-VALUES
+INSERT INTO dbo.Armazens(Nome, Endereco, Cidade, Estado, CapacidadeM3) VALUES
 ('Armazém Central Campinas', 'Rod. Anhanguera, km 100', 'Campinas', 'SP', 5000.00),
 ('Armazém São Paulo', 'Av. Marginal Tietê, 1500', 'São Paulo', 'SP', 8500.00),
 ('Centro Logístico Sul', 'BR-116, km 25', 'Curitiba', 'PR', 6200.00),
@@ -241,9 +249,7 @@ VALUES
 ('Centro Logístico Rio', 'Av. Brasil, 5000', 'Rio de Janeiro', 'RJ', 5500.00);
 GO
 
-INSERT INTO dbo.Produtos
-(Nome, Categoria, FornecedorID, PesoKg, VolumeM3, PrecoUnitario)
-VALUES
+INSERT INTO dbo.Produtos(Nome, Categoria, FornecedorID, PesoKg, VolumeM3, PrecoUnitario) VALUES
 ('Caixa de Parafusos', 'Ferragens', 1, 5.500, 0.020, 45.90),
 ('Bobina de Cabo 100m', 'Elétrico', 3, 12.000, 0.080, 210.00),
 ('Martelo Profissional', 'Ferramentas', 2, 1.200, 0.010, 65.50),
@@ -256,9 +262,7 @@ VALUES
 ('Extensão Elétrica 10m', 'Elétrico', 3, 1.800, 0.015, 79.90);
 GO
 
-INSERT INTO dbo.Transportadoras
-(Nome, CNPJ, Telefone, Email)
-VALUES
+INSERT INTO dbo.Transportadoras(Nome, CNPJ, Telefone, Email) VALUES
 ('LogExpress Transportes', '33.333.333/0001-99', '(19) 3500-4000', 'operacoes@logexpress.com'),
 ('Rápido Brasil', '44.444.444/0001-88', '(11) 3600-5000', 'contato@rapidobrasil.com'),
 ('Carga Sul', '55.555.555/0001-77', '(41) 3700-6000', 'atendimento@cargasul.com'),
@@ -267,9 +271,7 @@ VALUES
 ('Prime Cargo', '88.888.888/0001-38', '(21) 3833-1111', 'prime@primecargo.com');
 GO
 
-INSERT INTO dbo.Veiculos
-(Placa, Tipo, CapacidadeKg, CapacidadeM3, TransportadoraID)
-VALUES
+INSERT INTO dbo.Veiculos(Placa, Tipo, CapacidadeKg, CapacidadeM3, TransportadoraID) VALUES
 ('ABC1D23', 'Caminhão Toco', 4000.00, 20.00, 1),
 ('DEF4G56', 'Caminhão Truck', 12000.00, 45.00, 1),
 ('HIJ7K89', 'VUC', 2500.00, 12.00, 2),
@@ -282,9 +284,7 @@ VALUES
 ('RST9U01', 'Truck', 15000.00, 55.00, 4);
 GO
 
-INSERT INTO dbo.Motoristas
-(Nome, CNH, CPF, CategoriaCNH, Telefone, TransportadoraID)
-VALUES
+INSERT INTO dbo.Motoristas(Nome, CNH, CPF, CategoriaCNH, Telefone, TransportadoraID) VALUES
 ('João Pereira', '12345678900', '44.444.444-44', 'D', '(19) 99999-0000', 1),
 ('Carlos Souza', '22345678901', '55.555.555-55', 'E', '(11) 98888-1111', 1),
 ('Marcos Lima', '32345678902', '66.666.666-66', 'D', '(41) 97777-2222', 2),
@@ -297,9 +297,7 @@ VALUES
 ('Diego Oliveira', '10345678909', '40.444.555-66', 'E', '(31) 90000-9999', 4);
 GO
 
-INSERT INTO dbo.Rotas
-(ArmazemOrigemID, CidadeDestino, EstadoDestino, DistanciaKM, TempoEstimadoHoras)
-VALUES
+INSERT INTO dbo.Rotas(ArmazemOrigemID, CidadeDestino, EstadoDestino, DistanciaKM, TempoEstimadoHoras) VALUES
 (1, 'São Paulo', 'SP', 100.00, 2.00),
 (1, 'Jundiaí', 'SP', 45.00, 1.00),
 (1, 'Campinas', 'SP', 95.00, 2.00),
@@ -312,9 +310,7 @@ VALUES
 (1, 'Porto Alegre', 'RS', 700.00, 10.00);
 GO
 
-INSERT INTO dbo.Estoque
-(ArmazemID, ProdutoID, Quantidade, QuantidadeMin)
-VALUES
+INSERT INTO dbo.Estoque(ArmazemID, ProdutoID, Quantidade, QuantidadeMin) VALUES
 (1, 1, 200, 50),
 (1, 2, 80, 20),
 (1, 3, 120, 30),
@@ -328,9 +324,7 @@ VALUES
 (5, 10, 150, 30);
 GO
 
-INSERT INTO dbo.Pedidos
-(ClienteID, ArmazemOrigemID, DataPedido, StatusPedido, ValorTotal)
-VALUES
+INSERT INTO dbo.Pedidos (ClienteID, ArmazemOrigemID, DataPedido, StatusPedido, ValorTotal) VALUES
 (1, 1, '2026-07-01', 'Entregue', 1500.00),
 (2, 2, '2026-04-20', 'Cancelado', 850.50),
 (3, 3, '2026-07-20', 'Entregue', 2300.00),
@@ -343,9 +337,7 @@ VALUES
 (10, 4, '2023-03-20', 'Entregue', 5000.00);
 GO
 
-INSERT INTO dbo.Entregas
-(PedidoID, VeiculoID, MotoristaID, RotaID, DataSaida, DataEntregaPrevista, DataEntregaReal, StatusEntrega)
-VALUES
+INSERT INTO dbo.Entregas(PedidoID, VeiculoID, MotoristaID, RotaID, DataSaida, DataEntregaPrevista, DataEntregaReal, StatusEntrega) VALUES
 (1, 1, 1, 1, '2026-07-02', '2026-07-25', '2026-07-23', 'Entregue'),
 (2, 2, 2, 2, '2026-04-23', '2026-06-10', NULL, 'Cancelado'),
 (3, 3, 3, 3, '2026-07-22', '2026-08-05', '2026-08-15', 'Atrasado'),
@@ -358,18 +350,14 @@ VALUES
 (10, 10, 10, 10, '2023-03-23', '2023-04-21', '2023-04-19', 'Entregue');
 GO
 
-INSERT INTO dbo.Ocorrencias
-(EntregaID, TipoOcorrencia, Descricao, DataHora)
-VALUES
+INSERT INTO dbo.Ocorrencias(EntregaID, TipoOcorrencia, Descricao, DataHora) VALUES
 (1, 'Cliente ausente', 'Cliente não estava disponível para recebimento', '2026-07-23 12:00:00'),
 (3, 'Atraso na entrega', 'Entrega realizada após a data prevista', '2026-08-15 14:30:00'),
 (5, 'Avaria no produto', 'Produto chegou com embalagem danificada', '2026-03-18 09:20:00'),
 (8, 'Entrega cancelada', 'Pedido cancelado antes da conclusão', '2024-07-18 10:00:00');
 GO
 
-INSERT INTO dbo.Rastreamento
-(EntregaID, DataHora, Latitude, Longitude, StatusAtual)
-VALUES
+INSERT INTO dbo.Rastreamento(EntregaID, DataHora, Latitude, Longitude, StatusAtual) VALUES
 (1, '2026-07-23 08:00:00', -23.5505, -46.6333, 'Em rota'),
 (1, '2026-07-23 12:00:00', -23.5200, -46.6200, 'Chegando ao destino'),
 (3, '2026-08-15 10:00:00', -22.9056, -47.0608, 'Atrasado'),
@@ -377,9 +365,7 @@ VALUES
 (8, '2024-06-15 15:30:00', -22.9056, -47.0608, 'Cancelado');
 GO
 
-INSERT INTO dbo.ItensPedido
-(PedidoID, ProdutoID, Quantidade, PrecoUnitario)
-VALUES
+INSERT INTO dbo.ItensPedido(PedidoID, ProdutoID, Quantidade, PrecoUnitario) VALUES
 (1, 2, 3, 210.00),
 (1, 5, 1, 39.90),
 (2, 3, 2, 65.50),
