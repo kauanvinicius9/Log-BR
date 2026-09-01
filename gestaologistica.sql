@@ -1,12 +1,12 @@
-IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'GestaoLogistica')
-BEGIN
-CREATE DATABASE GestaoLogistica;
-END
+IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'GestaoLogistica') BEGIN
+  
+CREATE DATABASE GestaoLogistica; END
 GO
 
 USE GestaoLogistica;
 GO
 
+-- Logistics Tables
 IF OBJECT_ID('dbo.Ocorrencias', 'U') IS NOT NULL DROP TABLE dbo.Ocorrencias;
 IF OBJECT_ID('dbo.Rastreamento', 'U') IS NOT NULL DROP TABLE dbo.Rastreamento;
 IF OBJECT_ID('dbo.Entregas', 'U') IS NOT NULL DROP TABLE dbo.Entregas;
@@ -120,8 +120,10 @@ CREATE TABLE dbo.Estoque (
   Quantidade INT NOT NULL DEFAULT 0,
   QuantidadeMin INT NOT NULL DEFAULT 0,
   DataAtualizacao DATETIME NOT NULL DEFAULT GETDATE(),
-  CONSTRAINT FK_Estoque_Armazens FOREIGN KEY (ArmazemID) REFERENCES dbo.Armazens(ArmazemID),
-  CONSTRAINT FK_Estoque_Produtos FOREIGN KEY (ProdutoID) REFERENCES dbo.Produtos(ProdutoID),
+  CONSTRAINT FK_Estoque_Armazens FOREIGN KEY (ArmazemID) 
+    REFERENCES dbo.Armazens(ArmazemID),
+  CONSTRAINT FK_Estoque_Produtos FOREIGN KEY (ProdutoID) 
+    REFERENCES dbo.Produtos(ProdutoID),
   CONSTRAINT UQ_Estoque_Armazem_Produto UNIQUE (ArmazemID, ProdutoID),
   CONSTRAINT CK_Estoque_Quantidade CHECK (Quantidade >= 0)
 );
@@ -134,9 +136,12 @@ CREATE TABLE dbo.Pedidos (
   DataPedido DATETIME NOT NULL DEFAULT GETDATE(),
   StatusPedido NVARCHAR(30) NOT NULL DEFAULT 'Enviado',
   ValorTotal DECIMAL(14,2) NOT NULL DEFAULT 0,
-  CONSTRAINT FK_Pedidos_Clientes FOREIGN KEY (ClienteID) REFERENCES dbo.Clientes(ClienteID),
-  CONSTRAINT FK_Pedidos_Armazens FOREIGN KEY (ArmazemOrigemID) REFERENCES dbo.Armazens(ArmazemID),
-  CONSTRAINT CK_Pedidos_Status CHECK (StatusPedido IN ('Enviado','Entregue','Cancelado', 'Atrasado'))
+  CONSTRAINT FK_Pedidos_Clientes FOREIGN KEY (ClienteID) 
+    REFERENCES dbo.Clientes(ClienteID),
+  CONSTRAINT FK_Pedidos_Armazens FOREIGN KEY (ArmazemOrigemID) 
+    REFERENCES dbo.Armazens(ArmazemID),
+  CONSTRAINT CK_Pedidos_Status CHECK (StatusPedido 
+    IN ('Enviado','Entregue','Cancelado', 'Atrasado'))
 );
 GO
 
@@ -146,8 +151,10 @@ CREATE TABLE dbo.ItensPedido (
   ProdutoID INT NOT NULL,
   Quantidade INT NOT NULL,
   PrecoUnitario DECIMAL(12,2) NOT NULL,
-  CONSTRAINT FK_ItensPedido_Pedidos FOREIGN KEY (PedidoID) REFERENCES dbo.Pedidos(PedidoID) ON DELETE CASCADE,
-  CONSTRAINT FK_ItensPedido_Produtos FOREIGN KEY (ProdutoID) REFERENCES dbo.Produtos(ProdutoID),
+  CONSTRAINT FK_ItensPedido_Pedidos FOREIGN KEY (PedidoID) 
+    REFERENCES dbo.Pedidos(PedidoID) ON DELETE CASCADE,
+  CONSTRAINT FK_ItensPedido_Produtos FOREIGN KEY (ProdutoID) 
+    REFERENCES dbo.Produtos(ProdutoID),
   CONSTRAINT CK_ItensPedido_Quantidade CHECK (Quantidade > 0)
 );
 GO
@@ -175,11 +182,16 @@ CREATE TABLE dbo.Entregas (
   DataEntregaPrevista DATETIME NULL,
   DataEntregaReal DATETIME NULL,
   StatusEntrega NVARCHAR(30) NOT NULL DEFAULT 'Entregue',
-  CONSTRAINT FK_Entregas_Pedidos FOREIGN KEY (PedidoID) REFERENCES dbo.Pedidos(PedidoID),
-  CONSTRAINT FK_Entregas_Veiculos FOREIGN KEY (VeiculoID) REFERENCES dbo.Veiculos(VeiculoID),
-  CONSTRAINT FK_Entregas_Motoristas FOREIGN KEY (MotoristaID) REFERENCES dbo.Motoristas(MotoristaID),
-  CONSTRAINT FK_Entregas_Rotas FOREIGN KEY (RotaID) REFERENCES dbo.Rotas(RotaID),
-  CONSTRAINT CK_Entregas_Status CHECK (StatusEntrega IN ('Entregue','Atrasado','Cancelado'))
+  CONSTRAINT FK_Entregas_Pedidos FOREIGN KEY (PedidoID) 
+    REFERENCES dbo.Pedidos(PedidoID),
+  CONSTRAINT FK_Entregas_Veiculos FOREIGN KEY (VeiculoID) 
+    REFERENCES dbo.Veiculos(VeiculoID),
+  CONSTRAINT FK_Entregas_Motoristas FOREIGN KEY (MotoristaID) 
+    REFERENCES dbo.Motoristas(MotoristaID),
+  CONSTRAINT FK_Entregas_Rotas FOREIGN KEY (RotaID) 
+    REFERENCES dbo.Rotas(RotaID),
+  CONSTRAINT CK_Entregas_Status CHECK (StatusEntrega IN 
+    ('Entregue','Atrasado','Cancelado'))
 );
 GO
 
