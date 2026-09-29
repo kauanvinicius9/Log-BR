@@ -69,9 +69,7 @@ CREATE TABLE dbo.Produtos (
   PesoKG DECIMAL(10,3) NOT NULL DEFAULT 0,
   VolumeM3 DECIMAL(10,3) NOT NULL DEFAULT 0,
   PrecoUnitario DECIMAL(12,2) NOT NULL DEFAULT 0,
-  CONSTRAINT FK_Produtos_Fornecedores 
-    FOREIGN KEY (FornecedorID)  
-    REFERENCES dbo.Fornecedores(FornecedorID)
+  CONSTRAINT FK_Produtos_Fornecedores FOREIGN KEY (FornecedorID) REFERENCES dbo.Fornecedores(FornecedorID)
 );
 GO
 
@@ -92,9 +90,7 @@ CREATE TABLE dbo.Veiculos (
   CapacidadeM3 DECIMAL(10,2) NOT NULL DEFAULT 0,
   TransportadoraID INT NOT NULL,
   Status NVARCHAR(30) NOT NULL CONSTRAINT DF_Status DEFAULT 'Disponível',
-  CONSTRAINT FK_Veiculos_Transportadoras 
-    FOREIGN KEY (TransportadoraID) 
-    REFERENCES dbo.Transportadoras(TransportadoraID)
+  CONSTRAINT FK_Veiculos_Transportadoras FOREIGN KEY (TransportadoraID) REFERENCES dbo.Transportadoras(TransportadoraID)
 );
 GO
 
@@ -107,9 +103,7 @@ CREATE TABLE dbo.Motoristas (
   Email VARCHAR(150) NULL,
   Telefone VARCHAR(20) NULL,
   TransportadoraID INT NOT NULL,
-  CONSTRAINT FK_Motoristas_Transportadoras 
-    FOREIGN KEY (TransportadoraID) 
-    REFERENCES dbo.Transportadoras(TransportadoraID)
+  CONSTRAINT FK_Motoristas_Transportadoras FOREIGN KEY (TransportadoraID) REFERENCES dbo.Transportadoras(TransportadoraID)
 );
 GO
 
@@ -120,10 +114,8 @@ CREATE TABLE dbo.Estoque (
   Quantidade INT NOT NULL DEFAULT 0,
   QuantidadeMin INT NOT NULL DEFAULT 0,
   DataAtualizacao DATETIME NOT NULL DEFAULT GETDATE(),
-  CONSTRAINT FK_Estoque_Armazens FOREIGN KEY (ArmazemID) 
-    REFERENCES dbo.Armazens(ArmazemID),
-  CONSTRAINT FK_Estoque_Produtos FOREIGN KEY (ProdutoID) 
-    REFERENCES dbo.Produtos(ProdutoID),
+  CONSTRAINT FK_Estoque_Armazens FOREIGN KEY (ArmazemID) REFERENCES dbo.Armazens(ArmazemID),
+  CONSTRAINT FK_Estoque_Produtos FOREIGN KEY (ProdutoID) REFERENCES dbo.Produtos(ProdutoID),
   CONSTRAINT UQ_Estoque_Armazem_Produto UNIQUE (ArmazemID, ProdutoID),
   CONSTRAINT CK_Estoque_Quantidade CHECK (Quantidade >= 0)
 );
@@ -136,12 +128,9 @@ CREATE TABLE dbo.Pedidos (
   DataPedido DATETIME NOT NULL DEFAULT GETDATE(),
   StatusPedido NVARCHAR(30) NOT NULL DEFAULT 'Enviado',
   ValorTotal DECIMAL(14,2) NOT NULL DEFAULT 0,
-  CONSTRAINT FK_Pedidos_Clientes FOREIGN KEY (ClienteID) 
-    REFERENCES dbo.Clientes(ClienteID),
-  CONSTRAINT FK_Pedidos_Armazens FOREIGN KEY (ArmazemOrigemID) 
-    REFERENCES dbo.Armazens(ArmazemID),
-  CONSTRAINT CK_Pedidos_Status CHECK (StatusPedido 
-    IN ('Enviado','Entregue','Cancelado', 'Atrasado'))
+  CONSTRAINT FK_Pedidos_Clientes FOREIGN KEY (ClienteID) REFERENCES dbo.Clientes(ClienteID),
+  CONSTRAINT FK_Pedidos_Armazens FOREIGN KEY (ArmazemOrigemID) REFERENCES dbo.Armazens(ArmazemID),
+  CONSTRAINT CK_Pedidos_Status CHECK (StatusPedido IN ('Enviado','Entregue','Cancelado', 'Atrasado'))
 );
 GO
 
@@ -151,10 +140,8 @@ CREATE TABLE dbo.ItensPedido (
   ProdutoID INT NOT NULL,
   Quantidade INT NOT NULL,
   PrecoUnitario DECIMAL(12,2) NOT NULL,
-  CONSTRAINT FK_ItensPedido_Pedidos FOREIGN KEY (PedidoID) 
-    REFERENCES dbo.Pedidos(PedidoID) ON DELETE CASCADE,
-  CONSTRAINT FK_ItensPedido_Produtos FOREIGN KEY (ProdutoID) 
-    REFERENCES dbo.Produtos(ProdutoID),
+  CONSTRAINT FK_ItensPedido_Pedidos FOREIGN KEY (PedidoID) REFERENCES dbo.Pedidos(PedidoID) ON DELETE CASCADE,
+  CONSTRAINT FK_ItensPedido_Produtos FOREIGN KEY (ProdutoID) REFERENCES dbo.Produtos(ProdutoID),
   CONSTRAINT CK_ItensPedido_Quantidade CHECK (Quantidade > 0)
 );
 GO
@@ -166,9 +153,7 @@ CREATE TABLE dbo.Rotas (
   EstadoDestino CHAR(2) NOT NULL,
   DistanciaKM DECIMAL(10,2) NOT NULL,
   TempoEstimadoHoras DECIMAL(6,2) NOT NULL,
-  CONSTRAINT FK_Rotas_Armazens 
-    FOREIGN KEY (ArmazemOrigemID)  
-    REFERENCES dbo.Armazens(ArmazemID)
+  CONSTRAINT FK_Rotas_Armazens FOREIGN KEY (ArmazemOrigemID) REFERENCES dbo.Armazens(ArmazemID)
 );
 GO
 
@@ -182,16 +167,11 @@ CREATE TABLE dbo.Entregas (
   DataEntregaPrevista DATETIME NULL,
   DataEntregaReal DATETIME NULL,
   StatusEntrega NVARCHAR(30) NOT NULL DEFAULT 'Entregue',
-  CONSTRAINT FK_Entregas_Pedidos FOREIGN KEY (PedidoID) 
-    REFERENCES dbo.Pedidos(PedidoID),
-  CONSTRAINT FK_Entregas_Veiculos FOREIGN KEY (VeiculoID) 
-    REFERENCES dbo.Veiculos(VeiculoID),
-  CONSTRAINT FK_Entregas_Motoristas FOREIGN KEY (MotoristaID) 
-    REFERENCES dbo.Motoristas(MotoristaID),
-  CONSTRAINT FK_Entregas_Rotas FOREIGN KEY (RotaID) 
-    REFERENCES dbo.Rotas(RotaID),
-  CONSTRAINT CK_Entregas_Status CHECK (StatusEntrega IN 
-    ('Entregue','Atrasado','Cancelado'))
+  CONSTRAINT FK_Entregas_Pedidos FOREIGN KEY (PedidoID) REFERENCES dbo.Pedidos(PedidoID),
+  CONSTRAINT FK_Entregas_Veiculos FOREIGN KEY (VeiculoID) REFERENCES dbo.Veiculos(VeiculoID),
+  CONSTRAINT FK_Entregas_Motoristas FOREIGN KEY (MotoristaID) REFERENCES dbo.Motoristas(MotoristaID),
+  CONSTRAINT FK_Entregas_Rotas FOREIGN KEY (RotaID) REFERENCES dbo.Rotas(RotaID),
+  CONSTRAINT CK_Entregas_Status CHECK (StatusEntrega IN ('Entregue','Atrasado','Cancelado'))
 );
 GO
 
@@ -202,10 +182,7 @@ CREATE TABLE dbo.Rastreamento (
   Latitude DECIMAL(9,6) NOT NULL,
   Longitude DECIMAL(9,6) NOT NULL,
   StatusAtual NVARCHAR(50) NULL,
-  CONSTRAINT FK_Rastreamento_Entregas 
-    FOREIGN KEY (EntregaID) 
-    REFERENCES dbo.Entregas(EntregaID) 
-    ON DELETE CASCADE
+  CONSTRAINT FK_Rastreamento_Entregas FOREIGN KEY (EntregaID) REFERENCES dbo.Entregas(EntregaID) ON DELETE CASCADE
 );
 GO
 
@@ -215,10 +192,7 @@ CREATE TABLE dbo.Ocorrencias (
   TipoOcorrencia NVARCHAR(60) NOT NULL,
   Descricao NVARCHAR(400) NULL,
   DataHora DATETIME NOT NULL DEFAULT GETDATE(),
-  CONSTRAINT FK_Ocorrencias_Entregas 
-    FOREIGN KEY (EntregaID) 
-    REFERENCES dbo.Entregas(EntregaID) 
-    ON DELETE CASCADE
+  CONSTRAINT FK_Ocorrencias_Entregas FOREIGN KEY (EntregaID) REFERENCES dbo.Entregas(EntregaID) ON DELETE CASCADE
 );
 GO
 
