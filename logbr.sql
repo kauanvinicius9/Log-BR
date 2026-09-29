@@ -1,4 +1,4 @@
-IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'logbr') BEGIN
+IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'logBR') BEGIN
   
 CREATE DATABASE LogBR; END
 GO
