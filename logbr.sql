@@ -310,7 +310,7 @@ INSERT INTO dbo.Stock(WarehouseID, ProductID, Quantity, QuantityMin) VALUES
 (5, 10, 150, 30);
 GO
 
-INSERT INTO dbo.Orders (ClientID, WarehouseOriginID, OrderDate, OrderStatus, TotalValue) VALUES
+INSERT INTO dbo.Orders(ClientID, WarehouseOriginID, OrderDate, OrderStatus, TotalValue) VALUES
 (1, 1, '2026-07-01', 'Entregue', 1500.00),
 (2, 2, '2026-04-20', 'Cancelado', 850.50),
 (3, 3, '2026-07-20', 'Entregue', 2300.00),
