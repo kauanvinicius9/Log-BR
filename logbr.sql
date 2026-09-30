@@ -10,7 +10,7 @@ GO
 IF OBJECT_ID('dbo.Occurrences', 'U') IS NOT NULL DROP TABLE dbo.Occurrences;
 IF OBJECT_ID('dbo.Tracking', 'U') IS NOT NULL DROP TABLE dbo.Tracking;
 IF OBJECT_ID('dbo.Shipments', 'U') IS NOT NULL DROP TABLE dbo.Shipments;
-IF OBJECT_ID('dbo.Routes', 'U') IS NOT NULL DROP TABLE dbo.Routes;
+IF OBJECT_ID('dbo.Routers', 'U') IS NOT NULL DROP TABLE dbo.Routers;
 IF OBJECT_ID('dbo.OrderItem', 'U') IS NOT NULL DROP TABLE dbo.OrderItem;
 IF OBJECT_ID('dbo.Orders', 'U') IS NOT NULL DROP TABLE dbo.Orders;
 IF OBJECT_ID('dbo.Stock', 'U') IS NOT NULL DROP TABLE dbo.Stock;
@@ -146,14 +146,14 @@ CREATE TABLE dbo.OrderItem (
 );
 GO
 
-CREATE TABLE dbo.Routes (
-  RouteID INT IDENTITY(1,1) PRIMARY KEY,
+CREATE TABLE dbo.Routers (
+  RouterID INT IDENTITY(1,1) PRIMARY KEY,
   WarehouseOriginID INT NOT NULL,
   DestinationCity NVARCHAR(100) NOT NULL,
   StateCity CHAR(2) NOT NULL,
   DistanceKM DECIMAL(10,2) NOT NULL,
   TimeInHours DECIMAL(6,2) NOT NULL,
-  CONSTRAINT FK_Routes_Warehouses FOREIGN KEY (WarehouseOriginID) REFERENCES dbo.Warehouses(WarehouseID)
+  CONSTRAINT FK_Routers_Warehouses FOREIGN KEY (WarehouseOriginID) REFERENCES dbo.Warehouses(WarehouseID)
 );
 GO
 
@@ -162,7 +162,7 @@ CREATE TABLE dbo.Shipments (
   OrderID INT NOT NULL,
   VehicleID INT NOT NULL,
   DriverID INT NOT NULL,
-  RouteID INT NOT NULL,
+  RouterID INT NOT NULL,
   ExitDate DATETIME NULL,
   EstimatedShipmentDate DATETIME NULL,
   RealShipmentDate DATETIME NULL,
@@ -170,7 +170,7 @@ CREATE TABLE dbo.Shipments (
   CONSTRAINT FK_Shipments_Orders FOREIGN KEY (OrderID) REFERENCES dbo.Orders(OrderID),
   CONSTRAINT FK_Shipments_Vehicles FOREIGN KEY (VehicleID) REFERENCES dbo.Vehicles(VehicleID),
   CONSTRAINT FK_Shipments_Drivers FOREIGN KEY (DriverID) REFERENCES dbo.Drivers(DriverID),
-  CONSTRAINT FK_Shipments_Routes FOREIGN KEY (RouteID) REFERENCES dbo.Routes(RouteID),
+  CONSTRAINT FK_Shipments_Routers FOREIGN KEY (RouterID) REFERENCES dbo.Routers(RouterID),
   CONSTRAINT CK_Shipments_Status CHECK (StatusShipment IN ('Entregue','Atrasado','Cancelado'))
 );
 GO
@@ -235,7 +235,7 @@ INSERT INTO dbo.Warehouse(Name, Address, City, State, CapacityM3) VALUES
 ('Centro Logístico Rio', 'Av. Brasil, 5000', 'Rio de Janeiro', 'RJ', 5500.00);
 GO
 
-INSERT INTO dbo.Producs(Name, Category, SupplierID, WeightKg, VolumnM3, UnityPrice) VALUES
+INSERT INTO dbo.Products(Name, Category, SupplierID, WeightKg, VolumnM3, UnityPrice) VALUES
 ('Caixa de Parafusos', 'Ferragens', 1, 5.500, 0.020, 45.90),
 ('Bobina de Cabo 100m', 'Elétrico', 3, 12.000, 0.080, 210.00),
 ('Martelo Profissional', 'Ferramentas', 2, 1.200, 0.010, 65.50),
@@ -283,7 +283,7 @@ INSERT INTO dbo.Drivers(Name, CNH, CPF, CategoryCNH, Phone, ShippingCompanyID) V
 ('Diego Oliveira', '10345678909', '40.444.555-66', 'E', '(31) 90000-9999', 4);
 GO
 
-INSERT INTO dbo.Routes(WarehouseOriginID, DestinationCity, DestinationState, DistanceKM, TimeInHours) VALUES
+INSERT INTO dbo.Routers(WarehouseOriginID, DestinationCity, DestinationState, DistanceKM, TimeInHours) VALUES
 (1, 'São Paulo', 'SP', 100.00, 2.00),
 (1, 'Jundiaí', 'SP', 45.00, 1.00),
 (1, 'Campinas', 'SP', 95.00, 2.00),
@@ -323,7 +323,7 @@ INSERT INTO dbo.Orders(ClientID, WarehouseOriginID, OrderDate, OrderStatus, Tota
 (10, 4, '2023-03-20', 'Entregue', 5000.00);
 GO
 
-INSERT INTO dbo.Shipments(OrderID, VehicleID, DriverID, RouteID, ExitDate, EstimatedDeliveryDate, RealDeliveryDate, OrderStatus) VALUES
+INSERT INTO dbo.Shipments(OrderID, VehicleID, DriverID, RouterID, ExitDate, EstimatedDeliveryDate, RealDeliveryDate, OrderStatus) VALUES
 (1, 1, 1, 1, '2026-07-02', '2026-07-25', '2026-07-23', 'Entregue'),
 (2, 2, 2, 2, '2026-04-23', '2026-06-10', NULL, 'Cancelado'),
 (3, 3, 3, 3, '2026-07-22', '2026-08-05', '2026-08-15', 'Atrasado'),
