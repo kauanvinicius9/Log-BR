@@ -24,7 +24,7 @@ export interface Material {
     stockToday: number;
     stockMin: number;
     unitMedium: "UN" | "KG" | "CX" | "TON";
-    statusStock: "Normal" | "Crítico" | "Execsso";
+    statusStock: "Normal" | "Crítico" | "Excesso";
 }
 
 export interface Order {

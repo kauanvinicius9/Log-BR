@@ -37,11 +37,10 @@
         </table>
     </div>
 </template>
-
 <script setup-lang="ts">
+import type { Material } from "@/types";
 import { ref, computed } from "vue";
 import { useMockData } from "@/composables/useMockData";
-import type { Material } from "@/types";
 import "./MaterialTable.scss";
 
 const { materials } = useMockData();
@@ -51,6 +50,7 @@ const sortAsc = ref<boolean>(true);
 const sortBy = (key: keyof Material) => {
     if (sortKey.value === key) {
         sortAsc.value = !sortAsc.value; 
+        
     } else {
         sortKey.value = key;
         sortAsc.value = true;

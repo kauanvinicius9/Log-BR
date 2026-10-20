@@ -31,8 +31,8 @@
 </template>
 
 <script setup lang="ts">
-import { useFilters } from '@/composables/useFilters';
-import type { PlantID, GlobalFilter } from '@/types';
+import { useFilters } from "@/composables/useFilters";
+import type { PlantID, GlobalFilter } from "@/types";
 import "./AppFilterBar.scss";
 
 const { filters, setPlant, setMaterialQuery, setPeriod, resetFilters } = useFilters();
