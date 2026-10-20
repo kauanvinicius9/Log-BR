@@ -1,0 +1,65 @@
+@use '@/assets/styles/variables' as *;
+@use '@/assets/styles/mixins' as *;
+
+.kpi-card {
+    @include card-base;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .kpi-header {
+        @include flex-between;
+        margin-bottom: 0.5rem;
+
+        .kpi-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: $text-muted;
+        }
+    }
+
+    .kpi-body {
+        display: flex;
+        align-items: baseline;
+        gap: 0.3rem;
+        margin-bottom: 0.75rem;
+
+        .kpi-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: $text-main;
+        }
+
+        .kpi-unit {
+            font-size: 0.9rem;
+            color: $text-muted;
+        }
+    }
+
+    .kpi-footer {
+        @include flex-between;
+        font-size: 0.75rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid $border-color;
+
+        .kpi-meta {
+            color: $text-muted;
+        }
+
+        .kpi-trend {
+            font-weight: 600;
+            padding: 0.15rem 0.4rem;
+            border-radius: $radius-sm;
+
+            &.positive {
+                color: $trend-positive;
+                background-color: $trend-positive-bg;
+            }
+
+            &.negative {
+                color: $trend-negative;
+                background-color: $trend-negative-bg;
+            }
+        }
+    }
+}
