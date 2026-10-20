@@ -1,72 +1,154 @@
-# log-br
+## Log-BR Project Documentation
 
-This template should help get you started developing with Vue 3 in Vite.
+## 1. Overview
 
-## Recommended IDE Setup
+**Log-BR** is a web application aimed at monitoring and logistics management (dashboards, KPIs, material and order control). Developed with **Vue.js 3**, **TypeScript**, **Vite**, **Pinia** and **Sass**, the project offers a modular interface with support for unit tests and end-to-end (E2E) tests.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+---
 
-This project replaces its workspace TypeScript package with [typescript-native-bridge](https://github.com/johnsoncodehk/typescript-native-bridge). Command-line tools use the bridge automatically. To use it in VS Code after installing dependencies, accept the prompt to use the workspace TypeScript version. If the prompt does not appear, run **TypeScript: Select TypeScript Version** and choose **Use Workspace Version**.
+## 2. Directory and File Structure
 
-## Recommended Browser Setup
-
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+```
+Log-BR-main/
+├── .editorconfig
+├── .gitignore
+├── .oxfmtrc.json
+├── .oxlintrc.json
+├── README.md
+├── cypress.config.ts
+├── env.d.ts
+├── eslint.config.ts
+├── index.html
+├── package.json
+├── package-lock.json
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+├── tsconfig.vitest.json
+├── vite.config.ts
+├── vitest.config.ts
+├── cypress/
+│ ├── e2e/
+│ │ └── example.cy.ts
+│ ├── fixtures/
+│ │ └── example.json
+│ └── support/
+│ ├── commands.ts
+│ └── e2e.ts
+├── src/
+│ ├── App.vue
+│ ├── main.ts
+│ ├── assets/
+│ │ └── styles/
+│ │ ├── _mixins.scss
+│ │ ├── _variables.scss
+│ │ └── main.scss
+│ ├── components/
+│ │ ├── common/
+│ │ │ ├── AppFilterBar.vue
+│ │ │ ├── AppFilterBar.scss
+│ │ │ ├── AppHeader.vue
+│ │ │ ├── AppHeader.scss
+│ │ │ ├── KPICard.vue
+│ │ │ └── KPICard.scss
+│ │ ├── dashboard/
+│ │ │ ├── IndicatorCharts.vue
+│ │ │ ├── IndicatorCharts.scss
+│ │ │ ├── IndicatorGrid.vue
+│ │ │ └── IndicatorGrid.scss
+│ │ ├── materials/
+│ │ │ ├── MaterialTable.vue
+│ │ │ └── MaterialTable.scss
+│ │ └── orders/
+│ │ ├── OrderList.vue
+│ │ └── OrderList.scss
+│ ├── composables/
+│ │ ├── useFilters.ts
+│ │ └── useMockData.ts
+│ ├── router/
+│ │ └── index.ts
+│ ├── stores/
+│ │ └── counter.ts
+│ └── types/
+│ └── index.ts
+└── tests/
+    └── unit/
+        ├── KPICard.spec.vue.ts
+        ├── useFilters.spec.ts
+        └── e2e/
+            └── portal.cy.ts
 ```
 
-### Compile and Hot-Reload for Development
+---
 
-```sh
-npm run dev
-```
+## 3. Architecture and Core Modules
 
-### Type-Check, Compile and Minify for Production
+### **3.1. Reusable Components (`src/components/common`)**
 
-```sh
-npm run build
-```
+* **`AppHeader.vue`**: Navigation header and application identification.
+* **`AppFilterBar.vue`**: Shared filter bar for filtering metrics and tables.
+* **`KPICard.vue`**: Visual card for displaying key performance indicators (KPIs).
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+### **3.2. Application Modules (`src/components/`)**
 
-```sh
-npm run test:unit
-```
+* **`dashboard/`**: Contains the indicator grid (`IndicatorGrid.vue`) and charts (`IndicatorCharts.vue`).
+* **`materials/`**: Detailed table for materials management (`MaterialTable.vue`).
+* **`orders/`**: List of transport and logistics orders (`OrderList.vue`).
 
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
+### **3.3. Composables and Status (`src/composables` & `src/stores`)**
 
-```sh
-npm run test:e2e:dev
-```
+* **`useFilters.ts`**: Reactive logic for managing search filters.
+* **`useMockData.ts`**: Provision of simulated data for testing and dashboard prototyping.
+* **`stores/ counter.ts`**: Global state management via Pinia.
 
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
+---
 
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
+## 4. Technologies Used
 
-```sh
-npm run build
-npm run test:e2e
-```
+* **Framework:** Vue.js 3 (Composition API)
+* **Build Tool:** Vite
+* **Language:** TypeScript
+* **Styling:** SCSS / Sass
+* **Unit Tests:** Vitest
+* **E2E Tests:** Cypress
 
-### Lint with [ESLint](https://eslint.org/)
+---
 
-```sh
-npm run lint
-```
+## 5. How to Execute the Project
+
+### Prerequisites
+
+* Node.js (version 18 or higher)
+* npm or yarn
+
+### Commands
+
+1. **Install dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+2. **Run in development mode:**
+
+   ```bash
+   npm run dev
+   ```
+
+3. **Run unit tests:**
+
+   ```bash
+   npm run test:unit
+   ```
+
+4. **Run E2E Tests:**
+
+   ```bash
+   npm run test:e2e
+   ```
+
+5. **Build for production:**
+
+   ```bash
+   npm run build
+   ```
