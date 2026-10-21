@@ -95,7 +95,7 @@ export function useMockData() {
         dateEmission: "2026-03-25",
         prevDelivery: "2026-04-02",
         status: "Entregue",
-        totalValue: "4933.00",
+        totalValue: 4933.00,
         itensCount: 12
     },
     {
@@ -105,7 +105,7 @@ export function useMockData() {
         dateEmission: "2026-07-01",
         prevDelivery: "2026-07-29",
         status: "Entregue",
-        totalValue: "5943.00",
+        totalValue: 5943.00,
         itensCount: 10
     },
     {
@@ -115,7 +115,7 @@ export function useMockData() {
         dateEmission: "2026-10-19",
         prevDelivery: "2026-10-21",
         status: "Em_Trânsito",
-        totalValue: "4273.00",
+        totalValue: 4273.00,
         itensCount: 18
     },
     {
@@ -125,7 +125,7 @@ export function useMockData() {
         dateEmission: "2026-10-17",
         prevDelivery: "2026-11-01",
         status: "Em_Trânsito",
-        totalValue: "4733.00",
+        totalValue: 4733.00,
         itensCount: 7
     }
   ]);

@@ -1,3 +1,5 @@
+@use '/src/assets/styles/variables' as *;
+
 @mixin flex-center {
     display: flex;
     align-items: center;
@@ -11,7 +13,7 @@
 }
 
 @mixin card-base {
-    background-color: $bg-card;
+    background: $bg-card;
     border-radius: $radius-md;
     border: 1px solid $border-color;
     box-shadow: $shadow-sm;

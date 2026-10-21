@@ -37,7 +37,7 @@
         </table>
     </div>
 </template>
-<script setup-lang="ts">
+<script setup lang="ts">
 import type { Material } from "@/types";
 import { ref, computed } from "vue";
 import { useMockData } from "@/composables/useMockData";

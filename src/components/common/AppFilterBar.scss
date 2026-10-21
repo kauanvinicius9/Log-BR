@@ -1,4 +1,5 @@
-@use '/assets/scss/variables' as *;
+@use '/src/assets/styles/mixins' as *;
+@use '/src/assets/styles/variables' as *;
 
 .filter-bar {
     @include card-base;
