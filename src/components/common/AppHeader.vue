@@ -7,7 +7,7 @@
             </div>
 
             <div class="user-section">
-                <div claas="user-info">
+                <div class="user-info">
                     <span class="user-name">Kauan Vinícius</span>
                     <span class="user-role">Gestor de Operações</span>
                 </div>
