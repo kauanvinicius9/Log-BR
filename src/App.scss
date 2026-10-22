@@ -1,0 +1,18 @@
+@use '@/assets/styles/variables' as *;
+@use '@/assets/styles/mixins' as *;
+
+.navbar {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+
+    .page {
+        text-decoration: none;
+        color: black;
+        transition: 0.3s ease;
+
+        &:hover {
+            color: $color-primary-light;
+        }
+    }
+}

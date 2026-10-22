@@ -37,15 +37,7 @@ import "./AppFilterBar.scss";
 
 const { filters, setPlant, setMaterialQuery, setPeriod, resetFilters } = useFilters();
 
-const onPlantChange = (e: Event) => {
-  setPlant((e.target as HTMLSelectElement).value as PlantID);
-};
-
-const onQueryInput = (e: Event) => {
-  setMaterialQuery((e.target as HTMLInputElement).value);
-};
-
-const onPeriodChange = (e: Event) => {
-  setPeriod((e.target as HTMLSelectElement).value as GlobalFilter["period"]);
-};
+const onPlantChange = (e: Event) => {setPlant((e.target as HTMLSelectElement).value as PlantID)};
+const onQueryInput = (e: Event) => {setMaterialQuery((e.target as HTMLInputElement).value)};
+const onPeriodChange = (e: Event) => {setPeriod((e.target as HTMLSelectElement).value as GlobalFilter["period"])};
 </script>
