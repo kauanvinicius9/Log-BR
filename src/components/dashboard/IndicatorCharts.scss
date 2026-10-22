@@ -1,6 +1,10 @@
 @use '@/assets/styles/variables' as *;
 @use '@/assets/styles/mixins' as *;
 
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .indicator-charts-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));

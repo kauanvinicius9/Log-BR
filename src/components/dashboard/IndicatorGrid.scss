@@ -1,5 +1,9 @@
 @use '@/assets/styles/variables' as *;
 
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .indicator-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));

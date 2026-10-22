@@ -1,6 +1,10 @@
 @use '/src/assets/styles/variables' as *;
 @use '/src/assets/styles/mixins' as *;
 
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .table-container {
     @include card-base;
     overflow-x: auto;
