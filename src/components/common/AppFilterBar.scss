@@ -1,6 +1,10 @@
 @use '/src/assets/styles/mixins' as *;
 @use '/src/assets/styles/variables' as *;
 
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .filter-bar {
     @include card-base;
     display: flex;

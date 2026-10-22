@@ -1,6 +1,10 @@
 @use '/src/assets/styles/mixins' as *;
 @use '/src/assets/styles/variables' as *;
 
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .app-header {
     background: $color-primary;
     color: #ffffff;
@@ -40,6 +44,7 @@
 
         .user-info {
             text-align: right;
+            flex-direction: column;
 
             .user-name {
                 display: block;

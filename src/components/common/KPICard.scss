@@ -1,6 +1,10 @@
 @use '/src/assets/styles/mixins' as *;
 @use '/src/assets/styles/variables' as *;
 
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .kpi-card {
     @include card-base;
     display: flex;
@@ -52,13 +56,13 @@
             border-radius: $radius-sm;
 
             &.positive {
-                color: $trend-positive;
-                background-color: $trend-positive-bg;
+                color: #e7ffe7;
+                background-color: #154815;
             }
 
             &.negative {
-                color: $trend-negative;
-                background-color: $trend-negative-bg;
+                color: #f5d2d2;
+                background-color: #811414;
             }
         }
     }

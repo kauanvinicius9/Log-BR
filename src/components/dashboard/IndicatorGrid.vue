@@ -8,5 +8,5 @@ import KPICard from '../common/KPICard.vue';
 import { useMockData } from '@/composables/useMockData';
 import "./IndicatorGrid.scss";
 
-const indicators = useMockData();
+const { indicators } = useMockData();
 </script>
